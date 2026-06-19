@@ -54,7 +54,7 @@ https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPOSITORY/main/configs/lit
 https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPOSITORY/main/configs/vless.txt
 ```
 
-For example this would be this repo sub links:
+For example these would be this repo's sub links:
 ```
 https://raw.githubusercontent.com/thealiiakbarii-ai/VCC/main/configs/all.txt
 https://raw.githubusercontent.com/thealiiakbarii-ai/VCC/main/configs/lite.txt
