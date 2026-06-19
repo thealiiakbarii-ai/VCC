@@ -45,3 +45,20 @@ that uses gRPC over Reality ends up in `vless.txt`, `grpc.txt`, *and*
 - Some repos publish shadowsocks links in the older "fully base64" format
   rather than the newer SIP002 format — these still get their remark
   rewritten correctly, just with a less precise dedup key.
+- Once it's running, you (or any v2ray/xray client) can fetch a live list
+directly via the raw GitHub URL, e.g.:
+
+```
+https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPOSITORY/main/configs/all.txt
+https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPOSITORY/main/configs/lite.txt
+https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPOSITORY/main/configs/vless.txt
+```
+
+For example this would be this repo sub links:
+```
+https://raw.githubusercontent.com/thealiiakbarii-ai/VCC/main/configs/all.txt
+https://raw.githubusercontent.com/thealiiakbarii-ai/VCC/main/configs/lite.txt
+https://raw.githubusercontent.com/thealiiakbarii-ai/VCC/main/configs/vless.txt
+```
+
+These can be used as a "subscription URL" in most v2ray/xray clients.
