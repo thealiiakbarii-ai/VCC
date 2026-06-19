@@ -27,3 +27,21 @@ that uses gRPC over Reality ends up in `vless.txt`, `grpc.txt`, *and*
 `reality.txt`.)
 
 ---
+## Notes & tuning
+
+- **Why two-stage search instead of searching code directly for
+  "vmess://"?** GitHub's code-search API doesn't support filtering by last
+  push date, and tokenizes special characters like `://` oddly. Instead the
+  script first finds *repositories* updated recently (where GitHub's
+  `pushed:` date filter works reliably), then scans plausible files inside
+  each one (`.txt`, `.yaml`, `.yml`, `.conf`, `.json`, `.md`, `.sub`) for
+  config URIs.
+- **Tune the search keywords** in `SEARCH_KEYWORDS` inside `main.py` if you
+  want to broaden or narrow which repos get scanned.
+- **Rate limits**: with a token, the repo-search endpoint allows ~30
+  requests/min, and the general API ~5000/hour — comfortable for hourly
+  runs at the current `MAX_REPOS` / `MAX_FILES_PER_REPO` settings. If you
+  raise those caps a lot, you may need to slow things down further.
+- Some repos publish shadowsocks links in the older "fully base64" format
+  rather than the newer SIP002 format — these still get their remark
+  rewritten correctly, just with a less precise dedup key.
