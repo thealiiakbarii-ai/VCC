@@ -1,0 +1,1 @@
+hysteria://example.com:443?auth=a&upmbps=abc&downmbps=50#%F0%9F%92%AE%20%EF%BC%B3%EF%BC%A5%EF%BC%A7%EF%BC%A1%EF%BC%B2%EF%BC%AF
