@@ -3,6 +3,7 @@ import re
 import json
 import time
 import base64
+import hashlib
 import socket
 import requests
 from collections import Counter
@@ -54,8 +55,6 @@ SEARCH_KEYWORDS = [
     "mtproto",
     "telegram-proxy",
     "telegram proxy",
-    "tg://proxy",
-    "t.me/proxy",
     "mtproto-proxy"
 ]
 
@@ -235,8 +234,10 @@ def safe_port(parsed):
 def make_key(parts, fallback_uri):
     if all(parts):
         return ":".join(str(p) for p in parts)
-    return "h:" + str(abs(hash(fallback_uri)))
 
+    return "h:" + hashlib.sha256(
+        fallback_uri.encode("utf-8")
+    ).hexdigest()
 
 def rewrite_vmess(uri):
     payload = uri[len("vmess://"):]
@@ -342,7 +343,6 @@ def rewrite_ssr(uri):
 
 
 def rewrite_mtproto(uri):
-
     uri = uri.replace("&amp;", "&")
 
     parsed = urlparse(uri)
@@ -355,12 +355,11 @@ def rewrite_mtproto(uri):
     if not server or not port or not secret:
         return None
 
-    new_uri = (
-        "tg://proxy?"
-        f"server={server}&"
-        f"port={port}&"
-        f"secret={secret}"
-    )
+    new_uri = "tg://proxy?" + urlencode({
+        "server": server,
+        "port": port,
+        "secret": secret
+    })
 
     key = make_key(
         (server, port, secret),
@@ -449,7 +448,7 @@ def test_node_latency(config_tuple):
 # --------------------------------------------------------------------------
 
 def main():
-    print(f"Searching for v2ray-related repos updated in the last {HOURS_BACK}h...")
+    print(f"Searching for proxy repositories updated in the last {HOURS_BACK}h...")
     repos = search_recent_repos()
     print(f"Found {len(repos)} candidate repos.")
 
