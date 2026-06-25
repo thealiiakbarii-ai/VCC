@@ -188,11 +188,17 @@ def fetch_raw(full_name, branch, path):
 
 def extract_configs(text):
     cleaned = []
+
     for m in CONFIG_REGEX.findall(text):
+        m = m.replace("&amp;", "&")
+        m = m.replace("\\u0026", "&")
+
         m = m.rstrip(TRAILING_JUNK)
         m = repair_uri(m)
+
         if m:
             cleaned.append(m)
+
     return cleaned
 
 
@@ -375,7 +381,12 @@ def process_config(raw_uri, skip_counts):
     if raw_uri.lower().startswith(
         ("tg://proxy", "http://t.me/proxy", "https://t.me/proxy")
     ):
-        return rewrite_mtproto(raw_uri)
+        try:
+            return rewrite_mtproto(raw_uri)
+        except Exception:
+            skip_counts["mtproto"] += 1
+            return None
+            return rewrite_mtproto(raw_uri)
 
     scheme = raw_uri.split("://", 1)[0].lower()
     handler = None
