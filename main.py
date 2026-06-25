@@ -371,6 +371,12 @@ def rewrite_mtproto(uri):
 
 
 def process_config(raw_uri, skip_counts):
+
+    if raw_uri.lower().startswith(
+        ("tg://proxy", "http://t.me/proxy", "https://t.me/proxy")
+    ):
+        return rewrite_mtproto(raw_uri)
+
     scheme = raw_uri.split("://", 1)[0].lower()
     handler = None
     if scheme == "vmess":
@@ -461,11 +467,10 @@ def main():
                     continue
                 
                 scheme = raw_uri.split("://", 1)[0].lower()
-                if raw_uri.lower().startswith(
-                    ("tg://proxy", "http://t.me/proxy", "https://t.me/proxy")
-                    ):
-                    return rewrite_mtproto(raw_uri)
-                primary_cat = NICE_NAME.get(scheme, scheme)
+                if "mtproto" in categories:
+                    primary_cat = "mtproto"
+                else:
+                    primary_cat = NICE_NAME.get(scheme, scheme)
                 
                 unique_raw_pool[key] = (new_uri, categories, primary_cat, host, port)
 
