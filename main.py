@@ -385,7 +385,6 @@ def process_config(raw_uri, skip_counts):
         except Exception:
             skip_counts["mtproto"] += 1
             return None
-            return rewrite_mtproto(raw_uri)
 
     scheme = raw_uri.split("://", 1)[0].lower()
     handler = None
