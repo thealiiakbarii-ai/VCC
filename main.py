@@ -1,20 +1,3 @@
-"""
-V2Ray / Xray config collector & validator (Heavy & Lite Split).
-
-Searches GitHub for recently updated configuration repositories, crawls proxy URIs,
-validates node availability using multi-threaded TCP pings, and splits the output
-into two master files:
-  - all.txt: A heavy file containing ALL verified online nodes.
-  - lite.txt: A lite file restricted to the top 20 fastest nodes per type.
-
-Environment variables (all optional):
-    GH_TOKEN / GITHUB_TOKEN   GitHub token used for API auth.
-    HOURS_BACK                How far back to look for repo updates (default 2).
-    MAX_REPOS                 Safety cap on number of repos scanned per run (default 10).
-    MAX_FILES_PER_REPO        Safety cap on files inspected per repo (default 60).
-    OUTPUT_DIR                Where to write the .txt files (default "configs").
-"""
-
 import os
 import re
 import json
@@ -68,13 +51,20 @@ SEARCH_KEYWORDS = [
     "v2ray-config",
     "free-v2ray",
     "v2ray-subscription",
+    "mtproto",
+    "telegram-proxy",
+    "telegram proxy",
+    "tg://proxy",
+    "t.me/proxy",
+    "mtproto-proxy"
 ]
 
 FILE_EXTENSIONS = (".txt", ".yaml", ".yml", ".conf", ".json", ".md", ".sub")
 SKIP_PATH_HINTS = (".git/", "node_modules/", "vendor/", "dist/", "build/")
 
 CONFIG_REGEX = re.compile(
-    r"(?:vmess|vless|ss|ssr|trojan|hysteria2?|tuic|snell)://[^\s\"'<>`]+",
+    r"(?:vmess|vless|ss|ssr|trojan|hysteria2?|tuic|snell)://[^\s\"'<>`]+"
+    r"|(?:tg://proxy|https?://t\.me/proxy)\?[^\s\"'<>`]+",
     re.IGNORECASE,
 )
 TRAILING_JUNK = ")]},.;\"'>`"
@@ -99,6 +89,7 @@ NICE_NAME = {
     "hysteria2": "hysteria2",
     "tuic": "tuic",
     "snell": "snell",
+    "mtproto": "mtproto",
 }
 
 session = requests.Session()
@@ -344,6 +335,41 @@ def rewrite_ssr(uri):
     return new_uri, categories, key, host, port
 
 
+def rewrite_mtproto(uri):
+
+    uri = uri.replace("&amp;", "&")
+
+    parsed = urlparse(uri)
+    qs = parse_qs(parsed.query)
+
+    server = qs.get("server", [None])[0]
+    port = qs.get("port", [None])[0]
+    secret = qs.get("secret", [None])[0]
+
+    if not server or not port or not secret:
+        return None
+
+    new_uri = (
+        "tg://proxy?"
+        f"server={server}&"
+        f"port={port}&"
+        f"secret={secret}"
+    )
+
+    key = make_key(
+        (server, port, secret),
+        new_uri
+    )
+
+    return (
+        new_uri,
+        {"mtproto"},
+        key,
+        server,
+        port
+    )
+
+
 def process_config(raw_uri, skip_counts):
     scheme = raw_uri.split("://", 1)[0].lower()
     handler = None
@@ -435,6 +461,10 @@ def main():
                     continue
                 
                 scheme = raw_uri.split("://", 1)[0].lower()
+                if raw_uri.lower().startswith(
+                    ("tg://proxy", "http://t.me/proxy", "https://t.me/proxy")
+                    ):
+                    return rewrite_mtproto(raw_uri)
                 primary_cat = NICE_NAME.get(scheme, scheme)
                 
                 unique_raw_pool[key] = (new_uri, categories, primary_cat, host, port)
