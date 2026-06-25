@@ -25,13 +25,13 @@ if GITHUB_TOKEN:
     HEADERS["Authorization"] = f"Bearer {GITHUB_TOKEN}"
 else:
     print("WARNING: no GH_TOKEN/GITHUB_TOKEN set. Rate limits will be very low.")
-HOURS_BACK = int(os.environ.get("HOURS_BACK", "2"))
+HOURS_BACK = int(os.environ.get("HOURS_BACK", "72"))
 MAX_REPOS = int(os.environ.get("MAX_REPOS", "30"))
 MAX_FILES_PER_REPO = int(os.environ.get("MAX_FILES_PER_REPO", "60"))
 MAX_FILE_BYTES = 400_000
 OUTPUT_DIR = os.environ.get("OUTPUT_DIR", "configs")
 VERBOSE = os.environ.get("VERBOSE", "0") == "1"
-CHECK_TIMEOUT = 3.0
+CHECK_TIMEOUT = 5.0
 MAX_CHECK_WORKERS = 50
 MAX_LITE_PER_TYPE = 25
 NEW_REMARK = "💮 ＳＥＧＡＲＯ"
