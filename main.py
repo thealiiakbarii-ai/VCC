@@ -246,6 +246,8 @@ def rewrite_fragment_style(uri, scheme):
     categories = {NICE_NAME.get(scheme, scheme)}
     net = (qs.get("type") or qs.get("net") or [""])[0].lower()
     security = (qs.get("security") or qs.get("security_type") or [""])[0].lower()
+    if "pbk" in qs and not security:
+        security = "reality"
     if net in ("ws", "websocket"):
         categories.add("websocket")
     elif net == "grpc":
@@ -360,7 +362,6 @@ def process_config(raw_uri, skip_counts):
 # --------------------------------------------------------------------------
 
 def test_node_latency(config_tuple):
-    """Performs a network port handshake to check if the remote host is alive."""
     new_uri, categories, primary_cat, host, port = config_tuple
     if not host or not port:
         return None
@@ -413,7 +414,7 @@ def main():
                     primary_cat = NICE_NAME.get(scheme, scheme)
                 unique_raw_pool[key] = (new_uri, categories, primary_cat, host, port)
     print(f"\nExtracted {len(unique_raw_pool)} unique configurations.")
-    print(f"Testing node health concurrently using {MAX_CHECK_WORKERS} threads...")
+    print(f"Testing TCP reachability using {MAX_CHECK_WORKERS} threads...")
     verified_nodes = []
     with ThreadPoolExecutor(max_workers=MAX_CHECK_WORKERS) as executor:
         results = executor.map(test_node_latency, unique_raw_pool.values())
