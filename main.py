@@ -26,7 +26,7 @@ if GITHUB_TOKEN:
 else:
     print("WARNING: no GH_TOKEN/GITHUB_TOKEN set. Rate limits will be very low.")
 HOURS_BACK = int(os.environ.get("HOURS_BACK", "2"))
-MAX_REPOS = int(os.environ.get("MAX_REPOS", "10"))
+MAX_REPOS = int(os.environ.get("MAX_REPOS", "30"))
 MAX_FILES_PER_REPO = int(os.environ.get("MAX_FILES_PER_REPO", "60"))
 MAX_FILE_BYTES = 400_000
 OUTPUT_DIR = os.environ.get("OUTPUT_DIR", "configs")
@@ -221,6 +221,7 @@ def rewrite_vmess(uri):
     obj["ps"] = NEW_REMARK
     net = str(obj.get("net", "")).lower()
     tls = str(obj.get("tls", "")).lower()
+    security = str(obj.get("security", "")).lower()
     new_b64 = b64_encode_std(json.dumps(obj, ensure_ascii=False))
     new_uri = "vmess://" + new_b64
     categories = {"vmess"}
@@ -228,7 +229,7 @@ def rewrite_vmess(uri):
         categories.add("websocket")
     elif net == "grpc":
         categories.add("grpc")
-    if tls == "reality":
+    if tls == "reality" or security == "reality":
         categories.add("reality")
     elif tls == "tls":
         categories.add("tls")
@@ -434,9 +435,13 @@ def main():
                 heavy_by_subcategory.setdefault(sub_cat, []).append(node["uri"])
         lite_subset = nodes[:MAX_LITE_PER_TYPE]
         for node in lite_subset:
-            lite_all_uris.append(node["uri"])
+            if node["uri"] not in lite_all_uris:
+                lite_all_uris.append(node["uri"])
         print(f"  -> {p_cat}: {len(nodes)} total online nodes. Saved top {len(lite_subset)} into lite bundle.")
     os.makedirs(OUTPUT_DIR, exist_ok=True)
+    for file in os.listdir(OUTPUT_DIR):
+        if file.endswith(".txt"):
+            os.remove(os.path.join(OUTPUT_DIR, file))
     for cat, uris in heavy_by_subcategory.items():
         out_path = os.path.join(OUTPUT_DIR, f"{cat}.txt")
         with open(out_path, "w", encoding="utf-8") as f:
