@@ -23,8 +23,8 @@ jobs:
       - name: Run collector
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HOURS_BACK: '2'
-          MAX_REPOS: '10'
+          # HOURS_BACK: '72'
+          # MAX_REPOS: '30'
         run: python main.py
       - name: Commit and push changes if any
         run: |
