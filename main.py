@@ -33,11 +33,10 @@ MAX_FILE_BYTES = 400_000
 OUTPUT_DIR = os.environ.get("OUTPUT_DIR", "configs")
 VERBOSE = os.environ.get("VERBOSE", "0") == "1"
 CHECK_TIMEOUT = 5.0
-MAX_CHECK_WORKERS = 50
+MAX_CHECK_WORKERS = 30
 MAX_LITE_PER_TYPE = 25
-NEW_REMARK = "💮 ＳＥＧＡＲＯ"
+NEW_REMARK = "𔒰‎ ＳＥＧＡＲＯ"
 
-# Skip lists and extensions for file search
 SKIP_PATH_HINTS = {"node_modules", "vendor", "assets", "images", "static"}
 FILE_EXTENSIONS = (".txt", ".md", ".json", ".yaml", ".yml")
 
@@ -110,19 +109,22 @@ def search_recent_repos():
         "shadowsocks OR shadowsocksr OR free-v2ray OR v2ray-subscription",
         "mtproto OR telegram-proxy OR mtproto-proxy"
     ]
+     
+    quota_per_group = max(4, MAX_REPOS // len(grouped_keywords))
     
     for query_str in grouped_keywords:
-        if len(found) >= MAX_REPOS:
-            break
         query = f"({query_str}) in:name,description,topics pushed:>={since}"
-        params = {"q": query, "sort": "updated", "order": "desc", "per_page": 50}
+        params = {"q": query, "sort": "updated", "order": "desc", "per_page": 30}
         resp = gh_get(f"{API_BASE}/search/repositories", params=params)
         time.sleep(3)
         if not resp:
             continue
-        for item in resp.json().get("items", []):
+            
+        items = resp.json().get("items", [])[:quota_per_group]
+        for item in items:
             found[item["full_name"]] = item
-    return list(found.values())[:MAX_REPOS]
+            
+    return list(found.values())
 
 def get_repo_tree(full_name, branch):
     url = f"{API_BASE}/repos/{full_name}/git/trees/{branch}"
@@ -394,9 +396,9 @@ def test_node_latency(config_tuple):
 # --------------------------------------------------------------------------
 
 def main():
-    print(f"Searching for proxy repositories updated in the last {HOURS_BACK}h...")
+    print(f"Searching for proxy repositories updated...")
     repos = search_recent_repos()
-    print(f"Found {len(repos)} candidate repos.")
+    print(f"Found {len(repos)} candidate repos balanced across categories.")
     unique_raw_pool = {}
     skip_counts = Counter()
     
@@ -438,7 +440,7 @@ def main():
         for res in results:
             if res:
                 verified_nodes.append(res)
-    print(f"Connection checking complete. {len(verified_nodes)} links responded successfully.")
+    print(f"Connection checking complete. {len(verified_nodes)} links processed.")
     
     grouped_by_type = {}
     for node in verified_nodes:
@@ -501,8 +503,6 @@ def main():
         f.write(f"lite_total={len(lite_all_uris)}\n")
         
     print(f"\nDone! Files completely wiped and updated inside '{OUTPUT_DIR}/'.")
-    print(f"  - Heavy master sheet: {heavy_path} ({len(heavy_all_uris)} nodes)")
-    print(f"  - Lite subscription sheet: {lite_path} ({len(lite_all_uris)} nodes)")
 
 if __name__ == "__main__":
     main()
