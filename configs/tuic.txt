@@ -1,0 +1,1 @@
+tuic://cd1b0ae0-4010-11ee-953a-f23c9164ca5d:cd1b0ae0-4010-11ee-953a-f23c9164ca5d@de0bc027-teisg0-thtg7i-1lkt0.jp5.hyhuawei.com:443?alpn=h3&congestion_control=bbr&sni=de0bc027-teisg0-thtg7i-1lkt0.jp5.hyhuawei.com&udp_relay_mode=native#%F0%94%92%B0%E2%80%8E%20%EF%BC%B3%EF%BC%A5%EF%BC%A7%EF%BC%A1%EF%BC%B2%EF%BC%AF
