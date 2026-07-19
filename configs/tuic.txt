@@ -1,0 +1,1 @@
+tuic://f5c0eda2-4b97-11ed-bd7c-f23c913c8d2b:f5c0eda2-4b97-11ed-bd7c-f23c913c8d2b@3cbbc5b1-tegxs0-ttyjoe-ieln.sjc.oshuawei.com:443?sni=3cbbc5b1-tegxs0-ttyjoe-ieln.sjc.oshuawei.com&alpn=h3&congestion_control=bbr&udp_relay_mode=native#%F0%94%92%B0%E2%80%8E%20%EF%BC%B3%EF%BC%A5%EF%BC%A7%EF%BC%A1%EF%BC%B2%EF%BC%AF
