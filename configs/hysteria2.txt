@@ -1,2 +1,2 @@
 hysteria2://qIg7TMxfJvx6t27er0c9P0osebAAPu2PYlB_aoWelV5kVVQ2@fr2.h2corp.org:443?sni=fr2.h2corp.org&insecure=0&allowInsecure=0&fp=qq#%F0%94%92%B0%E2%80%8E%20%EF%BC%B3%EF%BC%A5%EF%BC%A7%EF%BC%A1%EF%BC%B2%EF%BC%AF
-hysteria2://u9zD-8mD-XZROtWZCZGNb_qU7qR3Q4dLk7hnLfaJBNyu12Mn@lv.h2corp.org:443?sni=lv.h2corp.org&insecure=0&allowInsecure=0&fp=edge#%F0%94%92%B0%E2%80%8E%20%EF%BC%B3%EF%BC%A5%EF%BC%A7%EF%BC%A1%EF%BC%B2%EF%BC%AF
+hysteria2://u9zD-8mD-XZROtWZCZGNb_qU7qR3Q4dLk7hnLfaJBNyu12Mn@lv.h2corp.org:443?sni=lv.h2corp.org&insecure=0&allowInsecure=0&fp=qq#%F0%94%92%B0%E2%80%8E%20%EF%BC%B3%EF%BC%A5%EF%BC%A7%EF%BC%A1%EF%BC%B2%EF%BC%AF
