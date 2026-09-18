@@ -1,1 +1,0 @@
-tuic://c28f2f1e-265c-4672-ab64-d038254cc362:8264dd9849a38cf8@172.67.206.75:443?congestion_control=bbr&udp_relay_mode=quic#%F0%94%92%B0%E2%80%8E%20%EF%BC%B3%EF%BC%A5%EF%BC%A7%EF%BC%A1%EF%BC%B2%EF%BC%AF
