@@ -1,3 +1,1 @@
-hysteria2://334f25ef-3fb7-44a0-8ab7-79527d613281@45.91.236.216:443?sni=releases.swiftedge-labs.com#%F0%94%92%B0%E2%80%8E%20%EF%BC%B3%EF%BC%A5%EF%BC%A7%EF%BC%A1%EF%BC%B2%EF%BC%AF
-hysteria2://cd74c0a406664a5bc0bac098220a2468@2.27.59.206:443?sni=de1.sferavpn.pro&obfs=salamander&obfs-password=44f1c1e2f8b99e792ceed574627a1eb0#%F0%94%92%B0%E2%80%8E%20%EF%BC%B3%EF%BC%A5%EF%BC%A7%EF%BC%A1%EF%BC%B2%EF%BC%AF
-hysteria2://1027576c-c4df-4277-b3ef-38d3213b6574@161.118.253.238:443?insecure=1&sni=www.bing.com#%F0%94%92%B0%E2%80%8E%20%EF%BC%B3%EF%BC%A5%EF%BC%A7%EF%BC%A1%EF%BC%B2%EF%BC%AF
+hysteria2://cd74c0a406664a5bc0bac098220a2468@2.27.249.79:443?security=tls&obfs=salamander&obfs-password=44f1c1e2f8b99e792ceed574627a1eb0&insecure=0&sni=nl1.sferavpn.pro#%F0%94%92%B0%E2%80%8E%20%EF%BC%B3%EF%BC%A5%EF%BC%A7%EF%BC%A1%EF%BC%B2%EF%BC%AF
